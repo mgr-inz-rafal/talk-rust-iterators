@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-	<title>Rust Clippy - Iterators</title>
+	<title>Rust - Iterators</title>
 
 	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="css/reveal.css">
@@ -23,9 +23,13 @@
 		document.getElementsByTagName('head')[0].appendChild(link);
 	</script>
 
-	<style>
+	<style type="text/css">
 		.explanation {
 			color: yellow;
+		}
+
+		code {
+			color: lightsalmon;
 		}
 	</style>
 </head>
@@ -39,15 +43,91 @@
 							### Avoid writing for loops manually
 							<p class="explanation">mgr inż. Rafał Chabowski, XX.07.2019</p>
 							---
-							```rust
-							let vec = vec![1, 2, 3];
-							if vec.len() > std::usize::MAX 
+							<h2 style="color:lime;">Iterators</h2>
+							<ul>
+							<li>Work with <code>slices</code> (aka <code>ranges</code>)
+							<li>Used to process a series of items
+							<li>Originates from functional languages
+							<li>Makes it easy to avoid <code>bounds</code> <code>checking</code>
+							</ul>
+							---
+							<h2 style="color:lime;">Bounds checking</h2>
+							<ul>
+							<li>Rust guarantees checked access to <code>slices</code>
+							<li>Rust must validate the index you try to use agains the <code>slice</code>
+							<li>This my lead to degraded performance
+							</ul>
+							--
+							```
+							pub fn main()
+{
+    let arr: [u32; 3] = [1, 2, 3];
+    println!("{}", arr[2]);
+    println!("{}", arr[4]);
+}
+							```
+							<p class="fragment"><b>Compile time error</b></p>
+							<p class="fragment explanation">error: index out of bounds: the len is 3 but the index is 4</p>
+							--
+							```
+							use std::env;
+
+							pub fn main()
 							{
-									println!("Vector too big");
+									let arr: [u32; 3] = [1, 2, 3];
+									println!("{}", arr[2]);
+									println!("{}", arr[env::args().count()]);
+							}							
+							```
+							<p class="fragment"><b>Compiles, but will <code>panic!</code> if there are too many command line parameters</b></p>
+							<p class="fragment explanation">Let's see that in action</p>
+							--
+							```
+							pub fn foo(upper: usize) {
+								let v = vec![1, 2, 3];
+								for i in 0..upper	{
+										println!("{}", v[i]);
+								}
+							}
+							
+							pub fn main() {
+									foo(3);
 							}
 							```
-							<p class="fragment"><b>absurd_extreme_comparisons</b></p>
-							<p class="fragment explanation">Checking if size is greater than max or if unsigned is less than 0 is superfluous</p>
+							<p class="fragment"><b>Will generate the bounds checking code</b></p>
+							--
+							```
+							pub fn foo(upper: usize) {
+								assert_eq!(upper, 3);
+								let v = vec![1, 2, 3];
+								for i in 0..upper {
+										println!("{}", v[i]);
+								}
+							}
+							
+							pub fn main() {
+									foo(3);
+							}
+							```
+							<p class="fragment"><b>Will <code>not</code> generate the bounds checking code</b></p>
+							<p class="fragment explanation">You can tell Rust that bounds don't need to be checked</p>
+							--
+							```
+							pub fn foo(imagebuf: &mut [u8]) {
+								for chunk in imagebuf.chunks_mut(4) {
+										let temp = chunk[0];
+										chunk[0] = chunk[2];
+										chunk[2] = temp;
+								}
+							}
+							
+							pub fn main() {
+									let mut c:[u8; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+									foo(&mut c);
+							}
+							```
+							<p class="fragment"><b>Add <code>assert_eq!(imagebuf.len(), 8);</code> to avoid bounds checking</b></p>
+							<p class="fragment explanation"><b>Credits go to StackOverflow</b></p>
 							---
 							<h1>Thank you</h1>
 							<p class="fragment explanation">You're such a fantastic audience</p>
