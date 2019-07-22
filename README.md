@@ -54,3 +54,5 @@
 ## Creating own iterator
 
 ## iter() vs into_iter()
+
+## https://danielkeep.github.io/itercheat_baked.html
