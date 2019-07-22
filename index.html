@@ -54,7 +54,7 @@
 							<h2 style="color:lime;">Bounds checking</h2>
 							<ul>
 							<li>Rust guarantees checked access to <code>slices</code>
-							<li>Rust must validate the index you try to use agains the <code>slice</code>
+							<li>Rust must validate the index you try to use against the <code>slice</code>
 							<li>This my lead to degraded performance
 							</ul>
 							--
@@ -85,7 +85,7 @@
 							```
 							pub fn foo(upper: usize) {
 								let v = vec![1, 2, 3];
-								for i in 0..upper	{
+								for i in 0..upper {
 										println!("{}", v[i]);
 								}
 							}
@@ -128,6 +128,71 @@
 							```
 							<p class="fragment"><b>Add <code>assert_eq!(imagebuf.len(), 8);</code> to avoid bounds checking</b></p>
 							<p class="fragment explanation"><b>Credits go to StackOverflow</b></p>
+							---
+							<h2 style="color:lime;">Collecting</h2>
+							<ul>
+							<li>It's easy to turn <b>anything</b> iterable into collection
+							</ul>
+
+							```
+							pub fn main() {
+									let vec: Vec<u32> = (0..=10).collect();
+							}							
+							```
+							---
+							<h2 style="color:lime;">Printing</h2>
+
+							```
+							pub fn main() {
+									let vec: Vec<u32> = (0..=10).collect();
+									
+									vec.iter().for_each(|i| print!("{} ", i));
+							}
+							```
+							<p class="fragment">0 1 2 3 4 5 6 7 8 9 10</p>
+							---
+							<h2 style="color:lime;">Filtering</h2>
+
+							```
+							pub fn main() {
+								let vec: Vec<u32> = (0..=10).collect();
+								
+								vec.into_iter()
+									.filter(|i| *i > 5)
+									.for_each(|i| print!("{} ", i));
+							}
+							```
+							<p class="fragment">6 7 8 9 10</p>
+							---
+							<h2 style="color:lime;">Mapping</h2>
+
+							```
+							pub fn main() {
+								let vec: Vec<u32> = (0..=10).collect();
+								
+								vec.into_iter()
+									.filter(|i| *i > 5)
+									.map(|i| i * 3)
+									.for_each(|i| print!("{} ", i));
+							}
+							```
+							<p class="fragment">18 21 24 27 30</p>
+							---
+							<h2 style="color:lime;">Filtering and mapping</h2>
+
+							```
+							pub fn main() {
+								let vec: Vec<u32> = (0..=10).collect();
+
+								vec.into_iter()
+									.filter_map(|i| if i > 5 { Some(i * 3) } else {None})
+									.for_each(|i| print!("{:?} ", i));
+							}
+							```
+							<p class="fragment">18 21 24 27 30 </p>
+							<p class="fragment explanation">But don't do that... There are more canonical cases for filter_map()</p>
+							---
+							<h2 style="color:lime;">IterTools crate</h2>
 							---
 							<h1>Thank you</h1>
 							<p class="fragment explanation">You're such a fantastic audience</p>
