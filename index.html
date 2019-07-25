@@ -129,7 +129,7 @@
 							<p class="fragment"><b>Add <code>assert_eq!(imagebuf.len(), 8);</code> to avoid bounds checking</b></p>
 							<p class="fragment explanation"><b>Credits go to StackOverflow</b></p>
 							---
-							<h2 style="color:lime;">Collecting</h2>
+							<h2 style="color:lime;">Collect</h2>
 							<ul>
 							<li>It's easy to turn <b>anything</b> iterable into collection
 							</ul>
@@ -151,7 +151,7 @@
 							```
 							<p class="fragment">0 1 2 3 4 5 6 7 8 9 10</p>
 							---
-							<h2 style="color:lime;">Filtering</h2>
+							<h2 style="color:lime;">Filter</h2>
 
 							```
 							pub fn main() {
@@ -164,7 +164,7 @@
 							```
 							<p class="fragment">6 7 8 9 10</p>
 							---
-							<h2 style="color:lime;">Mapping</h2>
+							<h2 style="color:lime;">Map</h2>
 
 							```
 							pub fn main() {
@@ -217,6 +217,24 @@
 							assert_eq!(iter.next(), Some(5));
 							assert_eq!(iter.next(), None);
 							```
+							---
+							<h2 style="color:lime;">Fold</h2>
+							<ul>
+							<li>Known as <code>reduce</code> in functional programming
+							<li>or <code>accumulate</code> in C++
+							</ul>
+
+							```
+							fn main() {
+								let a = [1.1, 2.2, 3.3];
+								let sum = a.iter().fold(0, |acc, x| acc + x);
+								println!("{}", sum);
+							}			
+							```
+							<p class="fragment">Compile time error</p>
+							<p class="fragment explanation">no implementation for `{integer} + &{float}`</p>
+							---
+							<h2 style="color:lime;">iter() vs into_iter()</h2>
 							---
 							<h2 style="color:lime;">IterTools crate</h2>
 							---
