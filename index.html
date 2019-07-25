@@ -234,6 +234,21 @@
 							<p class="fragment">Compile time error</p>
 							<p class="fragment explanation">no implementation for `{integer} + &{float}`</p>
 							---
+							<h2 style="color:lime;">Enumerate</h2>
+
+							```
+							fn main() {
+								let a = ['a', 'b', 'c'];
+						
+								a.iter()
+										.enumerate()
+										.for_each(|(i, v)| println!("{} - {}", i, *v));
+							}		
+							```
+							<p class="fragment">0 - a<br>
+								1 - b<br>
+								2 - c</p>
+							---
 							<h2 style="color:lime;">iter() vs into_iter()</h2>
 							---
 							<h2 style="color:lime;">IterTools crate</h2>

@@ -8,12 +8,14 @@
 
 ## filter_map
 
+## fold
+
+## enumerate
+
 
 
 
 ## partition
-
-## enumerate
 
 ## count
 
