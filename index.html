@@ -189,8 +189,34 @@
 									.for_each(|i| print!("{:?} ", i));
 							}
 							```
-							<p class="fragment">18 21 24 27 30 </p>
+							<p class="fragment">18 21 24 27 30</p>
 							<p class="fragment explanation">But don't do that... There are more canonical cases for filter_map()</p>
+							--
+							<h2 style="color:lime;">Filtering and mapping</h2>
+
+							```
+							let a = ["1", "lol", "3", "NaN", "5"];
+							let mut iter = a.iter()
+								.map(|s| s.parse())
+								.filter(|s| s.is_ok()).map(|s| s.unwrap());
+							assert_eq!(iter.next(), Some(1));
+							assert_eq!(iter.next(), Some(3));
+							assert_eq!(iter.next(), Some(5));
+							assert_eq!(iter.next(), None);
+							```
+							<p class="fragment">Iterating a sequence of "maybe-values"</p>
+							--
+							<h2 style="color:lime;">Filtering and mapping</h2>
+
+							```
+							let a = ["1", "lol", "3", "NaN", "5"];
+							let mut iter = a.iter().filter_map(|s| s.parse().ok());
+							
+							assert_eq!(iter.next(), Some(1));
+							assert_eq!(iter.next(), Some(3));
+							assert_eq!(iter.next(), Some(5));
+							assert_eq!(iter.next(), None);
+							```
 							---
 							<h2 style="color:lime;">IterTools crate</h2>
 							---
