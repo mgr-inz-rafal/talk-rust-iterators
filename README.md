@@ -24,14 +24,13 @@
 
 ## skip_while
 
+## find
+
+## find_map
 
 
 
 ## partition
-
-## find
-
-## find_map
 
 ## fuse
 

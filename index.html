@@ -307,7 +307,7 @@
 							}  
 							```
 							<p class="fragment">4 5 6 7</p>
-							---
+							--
 							<h2 style="color:lime;">Skip_while</h2>
 
 							```
@@ -319,6 +319,52 @@
 							}
 							```
 							<p class="fragment">0 1 2 3 4</p>
+							---
+							<h2 style="color:lime;">Find</h2>
+
+							```
+							fn main() {
+								let a = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
+								let s = a.iter()
+										.find(|&i| 0 == *i % 3);
+										
+								print!("{:?}", s);
+							}
+							```
+							<p class="fragment">Some(-3)</p>
+							--
+							<h2 style="color:lime;">Find_map</h2>
+
+							```
+							fn main() {
+								let a = ["lol", "NaN", "2", "5"];
+								let first_number = a.iter()
+									.find_map(|s| s.parse().ok());
+								assert_eq!(first_number, Some(2));
+						
+								let a = ["lol", "NaN", "beret", "barscz"];
+								let first_number = a.iter()
+									.find_map(|s| s.parse().ok());
+								assert_eq!(first_number, None);
+							}  
+							```
+							<p class="fragment">cannot infer type</p>
+							--
+							<h2 style="color:lime;">Find_map</h2>
+
+							```
+							fn main() {
+								let a = ["lol", "NaN", "2", "5"];
+								let first_number = a.iter()
+									.find_map(|s| s.parse().ok());
+								assert_eq!(first_number, Some(2));
+						
+								let a = ["lol", "NaN", "beret", "barscz"];
+								let first_number: Option<i32> = a.iter()
+										.find_map(|s| s.parse().ok());
+								assert_eq!(first_number, None);
+							}  
+							```
 							---
 							<h2 style="color:lime;">iter() vs into_iter()</h2>
 							---
