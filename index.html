@@ -234,6 +234,17 @@
 							<p class="fragment">Compile time error</p>
 							<p class="fragment explanation">no implementation for `{integer} + &{float}`</p>
 							---
+							<h2 style="color:lime;">Sum</h2>
+
+							```
+							fn main() {
+								let a = [1.1, 2.2, 3.3];
+								let s: f64 = a.iter().sum();
+								println!("{}", s);
+							}  		
+							```
+							<p class="fragment">6.6</p>
+							---
 							<h2 style="color:lime;">Enumerate</h2>
 
 							```
@@ -248,6 +259,66 @@
 							<p class="fragment">0 - a<br>
 								1 - b<br>
 								2 - c</p>
+							---
+							<h2 style="color:lime;">Count</h2>
+
+							```
+							fn main() {
+								let a = ['a', 'b', 'c'];
+								println!("{}", a.iter().count());
+							}  
+							```
+							<p class="fragment">3<br></p>
+							---
+							<h2 style="color:lime;">Nth</h2>
+
+							```
+							fn main() {
+								let a = [1.1, 2.2, 3.3];
+								let s1 = a.iter().nth(1);
+								let s2 = a.iter().nth(10);
+								println!("{} {}", s1.is_some(), s2.is_some());
+							} 
+							```
+							<p class="fragment">true false</p>
+							---
+							<h2 style="color:lime;">Take</h2>
+
+							```
+							fn main() {
+								let a = ['a', 'b', 'c'];
+								a.iter()
+										.take(2)
+										.for_each(|i| println!("{}", i));
+							}  
+							```
+							<p class="fragment">a<br>
+							b<br></p>
+							---
+							<h2 style="color:lime;">Skip</h2>
+
+							```
+							fn main() {
+								let a = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+								a.iter()
+										.skip(3)
+										.take(4)
+										.for_each(|i| print!("{} ", i));
+							}  
+							```
+							<p class="fragment">4 5 6 7</p>
+							---
+							<h2 style="color:lime;">Skip_while</h2>
+
+							```
+							fn main() {
+								let a = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
+								a.iter()
+										.skip_while(|i| **i < 0)
+										.for_each(|i| print!("{} ", i));
+							}
+							```
+							<p class="fragment">0 1 2 3 4</p>
 							---
 							<h2 style="color:lime;">iter() vs into_iter()</h2>
 							---

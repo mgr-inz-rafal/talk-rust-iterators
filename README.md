@@ -12,12 +12,22 @@
 
 ## enumerate
 
+## count
+
+## take
+
+## sum
+
+## nth
+
+## skip
+
+## skip_while
+
 
 
 
 ## partition
-
-## count
 
 ## find
 
@@ -34,18 +44,6 @@
 ## max
 
 ## max_by
-
-## nth
-
-## take
-
-## skip
-
-## skip_while
-
-## sum
-
-## fold
 
 ## zip/unzip
 
