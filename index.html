@@ -41,7 +41,7 @@
 				<script type="text/template">
 							# Rust Iterators
 							### Avoid writing for loops manually
-							<p class="explanation">mgr inż. Rafał Chabowski, XX.07.2019</p>
+							<p class="explanation">mgr inż. Rafał Chabowski, 29.07.2019</p>
 							---
 							<h2 style="color:lime;">Iterators</h2>
 							<ul>
@@ -59,12 +59,9 @@
 							</ul>
 							--
 							```
-							pub fn main()
-{
-    let arr: [u32; 3] = [1, 2, 3];
-    println!("{}", arr[2]);
-    println!("{}", arr[4]);
-}
+							let arr: [u32; 3] = [1, 2, 3];
+							println!("{}", arr[2]);
+							println!("{}", arr[4]);
 							```
 							<p class="fragment"><b>Compile time error</b></p>
 							<p class="fragment explanation">error: index out of bounds: the len is 3 but the index is 4</p>
@@ -80,7 +77,7 @@
 							}							
 							```
 							<p class="fragment"><b>Compiles, but will <code>panic!</code> if there are too many command line parameters</b></p>
-							<p class="fragment explanation">Let's see that in action</p>
+							<p class="fragment explanation">Let's see the generated code</p>
 							--
 							```
 							pub fn foo(upper: usize) {
@@ -135,59 +132,49 @@
 							</ul>
 
 							```
-							pub fn main() {
-									let vec: Vec<u32> = (0..=10).collect();
-							}							
+							let vec: Vec<u32> = (0..=10).collect();
 							```
 							---
 							<h2 style="color:lime;">Printing</h2>
 
 							```
-							pub fn main() {
-									let vec: Vec<u32> = (0..=10).collect();
-									
-									vec.iter().for_each(|i| print!("{} ", i));
-							}
+							let vec: Vec<u32> = (0..=10).collect();
+							
+							vec.into_iter().for_each(|i| print!("{} ", i));
 							```
 							<p class="fragment">0 1 2 3 4 5 6 7 8 9 10</p>
 							---
 							<h2 style="color:lime;">Filter</h2>
 
 							```
-							pub fn main() {
-								let vec: Vec<u32> = (0..=10).collect();
-								
-								vec.into_iter()
-									.filter(|i| *i > 5)
-									.for_each(|i| print!("{} ", i));
-							}
+							let vec: Vec<u32> = (0..=10).collect();
+							
+							vec.into_iter()
+								.filter(|i| *i > 5)
+								.for_each(|i| print!("{} ", i));
 							```
 							<p class="fragment">6 7 8 9 10</p>
 							---
 							<h2 style="color:lime;">Map</h2>
 
 							```
-							pub fn main() {
-								let vec: Vec<u32> = (0..=10).collect();
-								
-								vec.into_iter()
-									.filter(|i| *i > 5)
-									.map(|i| i * 3)
-									.for_each(|i| print!("{} ", i));
-							}
+							let vec: Vec<u32> = (0..=10).collect();
+							
+							vec.into_iter()
+								.filter(|i| *i > 5)
+								.map(|i| i * 3)
+								.for_each(|i| print!("{} ", i));
 							```
 							<p class="fragment">18 21 24 27 30</p>
 							---
 							<h2 style="color:lime;">Filtering and mapping</h2>
 
 							```
-							pub fn main() {
-								let vec: Vec<u32> = (0..=10).collect();
+							let vec: Vec<u32> = (0..=10).collect();
 
-								vec.into_iter()
-									.filter_map(|i| if i > 5 { Some(i * 3) } else {None})
-									.for_each(|i| print!("{:?} ", i));
-							}
+							vec.into_iter()
+								.filter_map(|i| if i > 5 { Some(i * 3) } else {None})
+								.for_each(|i| print!("{:?} ", i));
 							```
 							<p class="fragment">18 21 24 27 30</p>
 							<p class="fragment explanation">But don't do that... There are more canonical cases for filter_map()</p>
@@ -196,9 +183,11 @@
 
 							```
 							let a = ["1", "lol", "3", "NaN", "5"];
-							let mut iter = a.iter()
-								.map(|s| s.parse())
-								.filter(|s| s.is_ok()).map(|s| s.unwrap());
+
+							let mut iter = a.into_iter()
+									.map(|s| s.parse())
+									.filter(|s| s.is_ok()).map(|s| s.unwrap());
+
 							assert_eq!(iter.next(), Some(1));
 							assert_eq!(iter.next(), Some(3));
 							assert_eq!(iter.next(), Some(5));
@@ -210,7 +199,7 @@
 
 							```
 							let a = ["1", "lol", "3", "NaN", "5"];
-							let mut iter = a.iter().filter_map(|s| s.parse().ok());
+							let mut iter = a.into_iter().filter_map(|s| s.parse().ok());
 							
 							assert_eq!(iter.next(), Some(1));
 							assert_eq!(iter.next(), Some(3));
@@ -225,11 +214,11 @@
 							</ul>
 
 							```
-							fn main() {
-								let a = [1.1, 2.2, 3.3];
-								let sum = a.iter().fold(0, |acc, x| acc + x);
-								println!("{}", sum);
-							}			
+							let a = [1.1, 2.2, 3.3];
+
+							let sum = a.into_iter().fold(0, |acc, x| acc + x);
+
+							println!("{}", sum);
 							```
 							<p class="fragment">Compile time error</p>
 							<p class="fragment explanation">no implementation for `{integer} + &{float}`</p>
@@ -237,24 +226,22 @@
 							<h2 style="color:lime;">Sum</h2>
 
 							```
-							fn main() {
-								let a = [1.1, 2.2, 3.3];
-								let s: f64 = a.iter().sum();
-								println!("{}", s);
-							}  		
+							let a = [1.1, 2.2, 3.3];
+
+							let s: f64 = a.into_iter().sum();
+
+							println!("{}", s);
 							```
 							<p class="fragment">6.6</p>
 							---
 							<h2 style="color:lime;">Enumerate</h2>
 
 							```
-							fn main() {
-								let a = ['a', 'b', 'c'];
-						
-								a.iter()
-										.enumerate()
-										.for_each(|(i, v)| println!("{} - {}", i, *v));
-							}		
+							let a = ['a', 'b', 'c'];
+					
+							a.into_iter()
+									.enumerate()
+									.for_each(|(i, v)| println!("{} - {}", i, *v));
 							```
 							<p class="fragment">0 - a<br>
 								1 - b<br>
@@ -263,34 +250,31 @@
 							<h2 style="color:lime;">Count</h2>
 
 							```
-							fn main() {
-								let a = ['a', 'b', 'c'];
-								println!("{}", a.iter().count());
-							}  
+							let a = ['a', 'b', 'c'];
+
+							println!("{}", a.into_iter().count());
 							```
 							<p class="fragment">3<br></p>
 							---
 							<h2 style="color:lime;">Nth</h2>
 
 							```
-							fn main() {
-								let a = [1.1, 2.2, 3.3];
-								let s1 = a.iter().nth(1);
-								let s2 = a.iter().nth(10);
-								println!("{} {}", s1.is_some(), s2.is_some());
-							} 
+							let a = [1.1, 2.2, 3.3];
+							let s1 = a.into_iter().nth(1);
+							let s2 = a.into_iter().nth(10);
+
+							println!("{} {}", s1.is_some(), s2.is_some());
 							```
 							<p class="fragment">true false</p>
 							---
 							<h2 style="color:lime;">Take</h2>
 
 							```
-							fn main() {
-								let a = ['a', 'b', 'c'];
-								a.iter()
-										.take(2)
-										.for_each(|i| println!("{}", i));
-							}  
+							let a = ['a', 'b', 'c'];
+
+							a.into_iter()
+									.take(2)
+									.for_each(|i| println!("{}", i));
 							```
 							<p class="fragment">a<br>
 							b<br></p>
@@ -298,77 +282,94 @@
 							<h2 style="color:lime;">Skip</h2>
 
 							```
-							fn main() {
-								let a = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-								a.iter()
-										.skip(3)
-										.take(4)
-										.for_each(|i| print!("{} ", i));
-							}  
+							let a = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+							
+							a.into_iter()
+									.skip(3)
+									.take(4)
+									.for_each(|i| print!("{} ", i));
 							```
 							<p class="fragment">4 5 6 7</p>
 							--
 							<h2 style="color:lime;">Skip_while</h2>
 
 							```
-							fn main() {
-								let a = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
-								a.iter()
-										.skip_while(|i| **i < 0)
-										.for_each(|i| print!("{} ", i));
-							}
+							let a = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
+
+							a.into_iter()
+									.skip_while(|i| **i < 0)
+									.for_each(|i| print!("{} ", i));
 							```
 							<p class="fragment">0 1 2 3 4</p>
 							---
 							<h2 style="color:lime;">Find</h2>
 
 							```
-							fn main() {
-								let a = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
-								let s = a.iter()
-										.find(|&i| 0 == *i % 3);
-										
-								print!("{:?}", s);
-							}
+							let a = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
+
+							let s = a.into_iter()
+									.find(|&i| 0 == *i % 3);
+									
+							print!("{:?}", s);
 							```
 							<p class="fragment">Some(-3)</p>
 							--
 							<h2 style="color:lime;">Find_map</h2>
 
 							```
-							fn main() {
-								let a = ["lol", "NaN", "2", "5"];
-								let first_number = a.iter()
+							let a = ["lol", "NaN", "2", "5"];
+
+							let first_number = a.into_iter()
+								.find_map(|s| s.parse().ok());
+							assert_eq!(first_number, Some(2));
+					
+							let a = ["lol", "NaN", "beret", "barscz"];
+
+							let first_number = a.into_iter()
 									.find_map(|s| s.parse().ok());
-								assert_eq!(first_number, Some(2));
-						
-								let a = ["lol", "NaN", "beret", "barscz"];
-								let first_number = a.iter()
-									.find_map(|s| s.parse().ok());
-								assert_eq!(first_number, None);
-							}  
+							assert_eq!(first_number, None);
 							```
 							<p class="fragment">cannot infer type</p>
 							--
 							<h2 style="color:lime;">Find_map</h2>
 
 							```
-							fn main() {
-								let a = ["lol", "NaN", "2", "5"];
-								let first_number = a.iter()
+							let a = ["lol", "NaN", "2", "5"];
+
+							let first_number = a.into_iter()
+								.find_map(|s| s.parse().ok());
+							assert_eq!(first_number, Some(2));
+					
+							let a = ["lol", "NaN", "beret", "barscz"];
+							
+							let first_number: Option<i32> = a.into_iter()
 									.find_map(|s| s.parse().ok());
-								assert_eq!(first_number, Some(2));
-						
-								let a = ["lol", "NaN", "beret", "barscz"];
-								let first_number: Option<i32> = a.iter()
-										.find_map(|s| s.parse().ok());
-								assert_eq!(first_number, None);
-							}  
+							assert_eq!(first_number, None);
 							```
 							---
-							<h2 style="color:lime;">iter() vs into_iter()</h2>
+							<h2 style="color:lime;">Zip</h2>
+
+							```
+							let a = ['A', 'B', 'C'];
+							let b = [65, 66, 67];
+							
+							a.into_iter()
+									.zip(b.into_iter())
+									.for_each(|(&i, &j)| println!("{} - {}", i, j));
+							```
+							<p class="fragment">A - 65<br>
+								B - 66<br>
+								C - 67</p>
 							---
-							<h2 style="color:lime;">IterTools crate</h2>
+							<h2 style="color:lime;">And more...</h2>
+							all, any, chain, cmp, cycle, eq, flatten, fuse, ge, gt, inspect, is_sorted, last, max, max_by, partition, peekable, product, step_by, try_fold, ...
+							---
+							<h2 style="color:lime;">Even more via IterTools crate</h2>
+							concat, cons_tuples, diff_with, interleave, kmerge, merge_join_by, multipeek, multizip, rciter, repeat_n, unfold, ...
+							<p class="fragment explanation">+ it's easy to create your own</p>
+							---
+							<h2 style="color:lime;">Cheatsheet</h2>
+							https://danielkeep.github.io/itercheat_baked.html
 							---
 							<h1>Thank you</h1>
 							<p class="fragment explanation">You're such a fantastic audience</p>

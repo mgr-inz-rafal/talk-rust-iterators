@@ -28,30 +28,6 @@
 
 ## find_map
 
+## zip
 
-
-## partition
-
-## fuse
-
-## retain
-
-## is_sorted
-
-## is_sorted_by
-
-## max
-
-## max_by
-
-## zip/unzip
-
-## position
-
-## product
-
-## Creating own iterator
-
-## iter() vs into_iter()
-
-## https://danielkeep.github.io/itercheat_baked.html
+## IterTools
